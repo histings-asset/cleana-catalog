@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27",
+  "note": "AI 配置教练（CLAUDE.md / .cursorrules / AGENTS.md / 等）的评分规则。客户端拿这份规则集给本地配置文件打分；分越高 = 越接近 Top 1% 用户的写法。",
+  "dimensions": [
+    {
+      "key": "structure",
+      "name": "结构完整性",
+      "weight": 25,
+      "checks": [
+        { "id": "has_title", "desc": "顶部是否有 # 一级标题", "regex": "^#\\s+[^\\n]+", "score": 5 },
+        { "id": "has_pitch", "desc": "标题下是否有产品定位 / 一句话介绍", "minLines": 1, "score": 5 },
+        { "id": "has_run_section", "desc": "是否说明运行 / 打包命令", "kw": ["运行", "打包", "build", "run", "swift run", "npm run", "pip"], "score": 5 },
+        { "id": "has_tech_stack", "desc": "是否列出技术栈 / 框架版本", "kw": ["技术栈", "依赖", "tech stack", "framework", "version"], "score": 5 },
+        { "id": "has_dir_tree", "desc": "是否有目录结构 ASCII 树", "regex": "├─|└─|│", "score": 5 }
+      ]
+    },
+    {
+      "key": "permissions",
+      "name": "权限 / 沙盒说明",
+      "weight": 15,
+      "checks": [
+        { "id": "tcc", "desc": "是否提到 TCC / 完全磁盘访问 / 隐私权限", "kw": ["TCC", "完全磁盘访问", "Full Disk Access", "FDA", "隐私"], "score": 8 },
+        { "id": "sandbox", "desc": "是否说明沙盒状态", "kw": ["沙盒", "sandbox", "App Sandbox"], "score": 4 },
+        { "id": "network", "desc": "是否说明网络访问范围", "kw": ["网络", "outbound", "endpoint", "API base URL"], "score": 3 }
+      ]
+    },
+    {
+      "key": "paths",
+      "name": "路径 / 命令示例",
+      "weight": 15,
+      "checks": [
+        { "id": "abs_paths", "desc": "是否给出绝对路径示例（/Users/... 或 ~/）", "regex": "(/Users/|~/|/opt/|/usr/local/)", "score": 8 },
+        { "id": "shell_blocks", "desc": "是否有 ```sh / ```bash 代码块", "regex": "```\\s*(sh|bash|zsh|shell)", "score": 7 }
+      ]
+    },
+    {
+      "key": "domain",
+      "name": "领域知识 / 坑",
+      "weight": 25,
+      "checks": [
+        { "id": "has_pitfalls", "desc": "是否记录踩过的坑 / 反模式 / 历史决定", "kw": ["坑", "踩坑", "陷阱", "注意", "重要", "约定", "pitfall", "gotcha"], "score": 12 },
+        { "id": "has_conservative_rules", "desc": "是否说明保守边界 / 安全护栏", "kw": ["保守", "护栏", "硬排除", "skip", "exclude"], "score": 8 },
+        { "id": "has_constraints", "desc": "是否列项目独有约束", "kw": ["约束", "限制", "前提", "假设"], "score": 5 }
+      ]
+    },
+    {
+      "key": "consistency",
+      "name": "跨工具一致性",
+      "weight": 20,
+      "checks": [
+        { "id": "agents_md", "desc": "项目根存在 AGENTS.md（codex/opencode 兼容）", "fileExists": "AGENTS.md", "score": 8 },
+        { "id": "cursor_rules", "desc": "项目根存在 .cursorrules 或 .cursor/rules/", "fileExists": [".cursorrules", ".cursor/rules"], "score": 6 },
+        { "id": "instructions_synced", "desc": "三处配置（CLAUDE.md / AGENTS.md / .cursorrules）核心约束是否一致", "manualReview": true, "score": 6 }
+      ]
+    }
+  ]
+}

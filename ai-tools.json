@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27",
+  "note": "Cleana 的 AI 工具目录。客户端会拉这份 JSON 替换内嵌 builtin 列表。每条工具的安装命令都来自官方文档；installMethod 决定最终 shell 命令。",
+  "tools": [
+    {
+      "slug": "claude-code",
+      "name": "Claude Code",
+      "publisher": "Anthropic",
+      "blurb": "Anthropic 官方命令行智能体，Terminal 里跟 Claude 直接工作。",
+      "category": "cli",
+      "installMethod": "npm",
+      "installTarget": "@anthropic-ai/claude-code",
+      "detectCommand": "claude --version",
+      "homepage": "https://docs.claude.com/en/docs/claude-code"
+    },
+    {
+      "slug": "codex-cli",
+      "name": "OpenAI Codex CLI",
+      "publisher": "OpenAI",
+      "blurb": "OpenAI 提供的终端编程智能体。",
+      "category": "cli",
+      "installMethod": "npm",
+      "installTarget": "@openai/codex",
+      "detectCommand": "codex --version",
+      "homepage": "https://github.com/openai/codex"
+    },
+    {
+      "slug": "gemini-cli",
+      "name": "Gemini CLI",
+      "publisher": "Google",
+      "blurb": "Google Gemini 官方命令行工具。",
+      "category": "cli",
+      "installMethod": "npm",
+      "installTarget": "@google/gemini-cli",
+      "detectCommand": "gemini --version",
+      "homepage": "https://github.com/google-gemini/gemini-cli"
+    },
+    {
+      "slug": "opencode",
+      "name": "OpenCode",
+      "publisher": "OpenCode",
+      "blurb": "用 Bun 跑的开源 AI 编程终端，AGENTS.md 兼容。",
+      "category": "cli",
+      "installMethod": "npm",
+      "installTarget": "opencode-ai",
+      "detectCommand": "opencode --version",
+      "homepage": "https://github.com/opencode-ai/opencode"
+    },
+    {
+      "slug": "aider",
+      "name": "Aider",
+      "publisher": "paul-gauthier",
+      "blurb": "Git 友好的 AI 结对程序员，支持多模型。",
+      "category": "cli",
+      "installMethod": "pip",
+      "installTarget": "aider-chat",
+      "detectCommand": "aider --version",
+      "homepage": "https://aider.chat"
+    },
+    {
+      "slug": "ollama",
+      "name": "Ollama",
+      "publisher": "Ollama",
+      "blurb": "本地跑 Llama / Qwen / Mistral，零门槛。",
+      "category": "server",
+      "installMethod": "brew",
+      "installTarget": "ollama",
+      "detectCommand": "ollama --version",
+      "homepage": "https://ollama.com"
+    },
+    {
+      "slug": "lm-studio",
+      "name": "LM Studio",
+      "publisher": "LM Studio",
+      "blurb": "图形界面的本地大模型实验工场。",
+      "category": "desktop",
+      "installMethod": "brewCask",
+      "installTarget": "lm-studio",
+      "detectCommand": null,
+      "homepage": "https://lmstudio.ai"
+    },
+    {
+      "slug": "cursor",
+      "name": "Cursor",
+      "publisher": "Anysphere",
+      "blurb": "内建 AI 的代码编辑器，VS Code 分支。",
+      "category": "editor",
+      "installMethod": "brewCask",
+      "installTarget": "cursor",
+      "detectCommand": null,
+      "homepage": "https://cursor.sh"
+    },
+    {
+      "slug": "zed",
+      "name": "Zed",
+      "publisher": "Zed Industries",
+      "blurb": "Rust 写的超快编辑器，内置 AI 助手。",
+      "category": "editor",
+      "installMethod": "brewCask",
+      "installTarget": "zed",
+      "detectCommand": null,
+      "homepage": "https://zed.dev"
+    },
+    {
+      "slug": "raycast-ai",
+      "name": "Raycast",
+      "publisher": "Raycast",
+      "blurb": "启动器 + AI 命令集，效率党常备。",
+      "category": "desktop",
+      "installMethod": "brewCask",
+      "installTarget": "raycast",
+      "detectCommand": null,
+      "homepage": "https://raycast.com"
+    },
+    {
+      "slug": "llamafile",
+      "name": "llamafile",
+      "publisher": "Mozilla",
+      "blurb": "单文件可执行大模型，零依赖本地跑。",
+      "category": "server",
+      "installMethod": "brew",
+      "installTarget": "llamafile",
+      "detectCommand": "llamafile --version",
+      "homepage": "https://github.com/Mozilla-Ocho/llamafile"
+    },
+    {
+      "slug": "open-interpreter",
+      "name": "Open Interpreter",
+      "publisher": "Open Interpreter",
+      "blurb": "让 LLM 直接在本地执行代码，按需操作文件。",
+      "category": "cli",
+      "installMethod": "pip",
+      "installTarget": "open-interpreter",
+      "detectCommand": "interpreter --version",
+      "homepage": "https://openinterpreter.com"
+    },
+    {
+      "slug": "whisper-cpp",
+      "name": "whisper.cpp",
+      "publisher": "ggerganov",
+      "blurb": "OpenAI Whisper 的 C++ 高效本地实现。",
+      "category": "server",
+      "installMethod": "brew",
+      "installTarget": "whisper-cpp",
+      "detectCommand": "whisper-cpp --help",
+      "homepage": "https://github.com/ggerganov/whisper.cpp"
+    }
+  ]
+}
