@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27",
+  "note": "Cleana 的 skill / plugin catalog——为 Claude Code / Cursor / Continue.dev / Aider 等 AI 工具维护的「常用扩展」。客户端拉这份 JSON，每条 skill 用 ConfigPatcher 一键写到对应 ~/.claude/skills/ / .cursorrules / config 文件。Skills 内容来自社区精选 + 官方仓库（anthropic-cookbook、agent-skills 等），Cleana 不写内容，只整理 + 保证一键可装。",
+  "skills": [
+    {
+      "id": "claude-planning-and-task-breakdown",
+      "name": "Planning & Task Breakdown",
+      "blurb": "把模糊需求拆解成可执行任务清单。每个任务有 acceptance criteria + risk note。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/planning-and-task-breakdown/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/planning-and-task-breakdown",
+      "category": "planning",
+      "popularityScore": 980,
+      "endorsement": "Anthropic 官方推荐"
+    },
+    {
+      "id": "claude-incremental-implementation",
+      "name": "Incremental Implementation",
+      "blurb": "禁止一次改 5+ 文件——分批 commit + 每批跑 test 确认。重构、port 必备。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/incremental-implementation/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/incremental-implementation",
+      "category": "coding",
+      "popularityScore": 920
+    },
+    {
+      "id": "claude-debugging-and-error-recovery",
+      "name": "Debugging & Error Recovery",
+      "blurb": "拿到错误先复现 + 写最小 test，再修。fix 不可改测试断言。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/debugging-and-error-recovery/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/debugging-and-error-recovery",
+      "category": "debug",
+      "popularityScore": 880
+    },
+    {
+      "id": "claude-test-driven-development",
+      "name": "Test-Driven Development",
+      "blurb": "Red → Green → Refactor 的强制流程，写完 fix 之前必须有失败 test。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/test-driven-development/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/test-driven-development",
+      "category": "testing",
+      "popularityScore": 850
+    },
+    {
+      "id": "claude-code-review-and-quality",
+      "name": "Code Review & Quality",
+      "blurb": "用 staff engineer 视角做 PR review：分组列风险面 → 逐点 diff → 终评。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/code-review-and-quality/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/code-review-and-quality",
+      "category": "review",
+      "popularityScore": 820
+    },
+    {
+      "id": "claude-shipping-and-launch",
+      "name": "Shipping & Launch",
+      "blurb": "里程碑 commit / changelog / release 流程。把杂乱的 WIP 收成 clean history。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/shipping-and-launch/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/shipping-and-launch",
+      "category": "release",
+      "popularityScore": 780
+    },
+    {
+      "id": "claude-code-simplification",
+      "name": "Code Simplification",
+      "blurb": "禁止过度抽象 / 防御编程 / 不必要的 wrapper。「三段相似 < 一个早抽象」。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/code-simplification/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/code-simplification",
+      "category": "refactor",
+      "popularityScore": 740
+    },
+    {
+      "id": "claude-git-workflow-and-versioning",
+      "name": "Git Workflow & Versioning",
+      "blurb": "commit message 规范、branch 策略、conflict 处理。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/git-workflow-and-versioning/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/git-workflow-and-versioning",
+      "category": "git",
+      "popularityScore": 710
+    },
+    {
+      "id": "claude-context-engineering",
+      "name": "Context Engineering",
+      "blurb": "管理长会话的上下文：什么时候要再 /init，什么时候让 Claude 总结过往。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/context-engineering/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/context-engineering",
+      "category": "meta",
+      "popularityScore": 680
+    },
+    {
+      "id": "claude-spec-driven-development",
+      "name": "Spec-Driven Development",
+      "blurb": "先写规格再写代码：feature spec / API spec / data shape。代码是规格的产物。",
+      "targetTool": "claude-code",
+      "targetPath": "~/.claude/skills/spec-driven-development/",
+      "installType": "git-clone",
+      "source": "https://github.com/anthropics/agent-skills/tree/main/skills/spec-driven-development",
+      "category": "design",
+      "popularityScore": 650
+    },
+    {
+      "id": "cursor-rules-strict-mode",
+      "name": "Cursor Strict Rules",
+      "blurb": ".cursorrules 模板：禁止改函数签名 / 不引新依赖 / 不写无注释 console.log。",
+      "targetTool": "cursor",
+      "targetPath": ".cursorrules",
+      "installType": "patch-template",
+      "patchTemplate": "# Cleana 推荐的 Cursor 严格规则\n\n- 修改函数前必须先看其调用方\n- 不要无故添加 try-catch / fallback\n- 注释只写 why 不写 what\n- 不引新依赖（如必须，需理由）\n- 提交前自跑 npm test / swift test\n- 一次改不超过 5 个文件\n",
+      "category": "config",
+      "popularityScore": 600,
+      "endorsement": "Cleana 自荐"
+    },
+    {
+      "id": "continue-local-ollama-config",
+      "name": "Continue.dev + Ollama 本地配置",
+      "blurb": "VS Code Continue 插件接 Ollama 本地推理——敏感代码不出本机。",
+      "targetTool": "continue",
+      "targetPath": "~/.continue/config.json",
+      "installType": "patch-template",
+      "patchTemplate": "{\n  \"models\": [{\n    \"title\": \"Qwen Coder 7B (local)\",\n    \"provider\": \"openai\",\n    \"model\": \"qwen2.5-coder:7b\",\n    \"apiBase\": \"http://localhost:11434/v1\",\n    \"apiKey\": \"\"\n  }],\n  \"tabAutocompleteModel\": {\n    \"title\": \"Qwen Coder 7B (local)\",\n    \"provider\": \"openai\",\n    \"model\": \"qwen2.5-coder:7b\",\n    \"apiBase\": \"http://localhost:11434/v1\"\n  }\n}",
+      "category": "config",
+      "popularityScore": 580
+    }
+  ]
+}
