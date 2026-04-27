@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27",
+  "note": "硬件评估器用的查询表。Phase 1 简化版，覆盖 Apple Silicon 主流机型 + 4 种 AI 工作流的最低/推荐配置。Cleana 客户端按 sysctl 拿到的型号 ID 反查这张表。",
+  "workloads": [
+    {
+      "id": "cursor_claude_code",
+      "name": "Cursor + Claude Code 主力",
+      "minRamGB": 16,
+      "recommendedRamGB": 24,
+      "minChipFamily": "M1",
+      "intensity": "moderate",
+      "note": "AI 编程主流配置：Cursor agent + Claude Code 双开。8GB 也能跑但会频繁 swap。"
+    },
+    {
+      "id": "ollama_small",
+      "name": "Ollama 7B-13B 本地推理",
+      "minRamGB": 16,
+      "recommendedRamGB": 24,
+      "minChipFamily": "M1",
+      "intensity": "moderate",
+      "note": "Llama 3 8B Q4 约占 4-5 GB；13B Q4 约 7-8 GB。M1 Air 16GB 跑没问题。"
+    },
+    {
+      "id": "ollama_large",
+      "name": "Ollama 70B 本地推理",
+      "minRamGB": 48,
+      "recommendedRamGB": 64,
+      "minChipFamily": "M1 Pro",
+      "intensity": "heavy",
+      "note": "Llama 3 70B Q4_K_M 约占 40-44 GB unified memory。建议 64GB 起步，否则跟 OS / 浏览器 / 编辑器抢内存会变慢。"
+    },
+    {
+      "id": "diffusion",
+      "name": "本地图像生成（SD / ComfyUI / SDXL）",
+      "minRamGB": 16,
+      "recommendedRamGB": 32,
+      "minChipFamily": "M1 Pro",
+      "intensity": "heavy",
+      "note": "SDXL 基础模型 6.5GB + LoRA + ControlNet 容易突破 16GB。M1 Air 跑 SD 1.5 还行，SDXL 吃力。"
+    }
+  ],
+  "models": [
+    {
+      "id": "Mac14,2",
+      "name": "MacBook Air 13\" (M2 2022)",
+      "chipFamily": "M2",
+      "released": "2022-07",
+      "newPriceCNY": 9499,
+      "secondhandCNY": { "good": 6800, "fair": 5500 },
+      "lifespanMonths": 36
+    },
+    {
+      "id": "Mac15,12",
+      "name": "MacBook Air 13\" (M3 2024)",
+      "chipFamily": "M3",
+      "released": "2024-03",
+      "newPriceCNY": 9499,
+      "secondhandCNY": { "good": 7800, "fair": 6500 },
+      "lifespanMonths": 48
+    },
+    {
+      "id": "Mac15,3",
+      "name": "MacBook Pro 14\" (M3 2023)",
+      "chipFamily": "M3",
+      "released": "2023-11",
+      "newPriceCNY": 14999,
+      "secondhandCNY": { "good": 11500, "fair": 9500 },
+      "lifespanMonths": 48
+    },
+    {
+      "id": "Mac15,8",
+      "name": "MacBook Pro 14\" (M3 Pro 2023)",
+      "chipFamily": "M3 Pro",
+      "released": "2023-11",
+      "newPriceCNY": 16999,
+      "secondhandCNY": { "good": 13500, "fair": 11000 },
+      "lifespanMonths": 54
+    },
+    {
+      "id": "Mac15,9",
+      "name": "MacBook Pro 14\" (M3 Max 2023)",
+      "chipFamily": "M3 Max",
+      "released": "2023-11",
+      "newPriceCNY": 24999,
+      "secondhandCNY": { "good": 19500, "fair": 16500 },
+      "lifespanMonths": 60
+    },
+    {
+      "id": "Mac15,10",
+      "name": "MacBook Pro 16\" (M3 Pro 2023)",
+      "chipFamily": "M3 Pro",
+      "released": "2023-11",
+      "newPriceCNY": 19999,
+      "secondhandCNY": { "good": 16000, "fair": 13000 },
+      "lifespanMonths": 54
+    },
+    {
+      "id": "Mac15,11",
+      "name": "MacBook Pro 16\" (M3 Max 2023)",
+      "chipFamily": "M3 Max",
+      "released": "2023-11",
+      "newPriceCNY": 27999,
+      "secondhandCNY": { "good": 22500, "fair": 18500 },
+      "lifespanMonths": 60
+    },
+    {
+      "id": "Mac16,1",
+      "name": "MacBook Pro 14\" (M4 2024)",
+      "chipFamily": "M4",
+      "released": "2024-10",
+      "newPriceCNY": 14999,
+      "secondhandCNY": { "good": 12500, "fair": 10500 },
+      "lifespanMonths": 54
+    },
+    {
+      "id": "Mac16,5",
+      "name": "MacBook Pro 14\" (M4 Pro 2024)",
+      "chipFamily": "M4 Pro",
+      "released": "2024-10",
+      "newPriceCNY": 16999,
+      "secondhandCNY": { "good": 14000, "fair": 12000 },
+      "lifespanMonths": 60
+    },
+    {
+      "id": "Mac16,6",
+      "name": "MacBook Pro 14\" (M4 Max 2024)",
+      "chipFamily": "M4 Max",
+      "released": "2024-10",
+      "newPriceCNY": 24999,
+      "secondhandCNY": { "good": 21000, "fair": 18000 },
+      "lifespanMonths": 66
+    },
+    {
+      "id": "Mac14,9",
+      "name": "MacBook Pro 14\" (M2 Pro 2023)",
+      "chipFamily": "M2 Pro",
+      "released": "2023-01",
+      "newPriceCNY": 16999,
+      "secondhandCNY": { "good": 11000, "fair": 9000 },
+      "lifespanMonths": 42
+    },
+    {
+      "id": "Mac14,5",
+      "name": "MacBook Pro 14\" (M1 Pro 2021)",
+      "chipFamily": "M1 Pro",
+      "released": "2021-10",
+      "newPriceCNY": 14999,
+      "secondhandCNY": { "good": 8500, "fair": 6800 },
+      "lifespanMonths": 36
+    },
+    {
+      "id": "Mac14,7",
+      "name": "MacBook Pro 14\" (M1 Max 2021)",
+      "chipFamily": "M1 Max",
+      "released": "2021-10",
+      "newPriceCNY": 19999,
+      "secondhandCNY": { "good": 11500, "fair": 9500 },
+      "lifespanMonths": 42
+    },
+    {
+      "id": "MacBookAir10,1",
+      "name": "MacBook Air 13\" (M1 2020)",
+      "chipFamily": "M1",
+      "released": "2020-11",
+      "newPriceCNY": 7999,
+      "secondhandCNY": { "good": 4500, "fair": 3500 },
+      "lifespanMonths": 30
+    },
+    {
+      "id": "Macmini9,1",
+      "name": "Mac mini (M1 2020)",
+      "chipFamily": "M1",
+      "released": "2020-11",
+      "newPriceCNY": 5499,
+      "secondhandCNY": { "good": 3500, "fair": 2700 },
+      "lifespanMonths": 30
+    },
+    {
+      "id": "Macmini14,3",
+      "name": "Mac mini (M2 2023)",
+      "chipFamily": "M2",
+      "released": "2023-01",
+      "newPriceCNY": 4499,
+      "secondhandCNY": { "good": 3500, "fair": 2800 },
+      "lifespanMonths": 36
+    },
+    {
+      "id": "Mac15,4",
+      "name": "Mac mini (M4 2024)",
+      "chipFamily": "M4",
+      "released": "2024-11",
+      "newPriceCNY": 4499,
+      "secondhandCNY": { "good": 3700, "fair": 3000 },
+      "lifespanMonths": 54
+    },
+    {
+      "id": "Mac15,6",
+      "name": "Mac Studio (M4 Max 2025)",
+      "chipFamily": "M4 Max",
+      "released": "2025-03",
+      "newPriceCNY": 16499,
+      "secondhandCNY": { "good": 14500, "fair": 12500 },
+      "lifespanMonths": 72
+    }
+  ]
+}
