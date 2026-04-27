@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27",
+  "note": "Cleana 的 AI 工作流库。每条 workflow = 一份用 AI 工具把某类事做到位的方法论：用哪些工具、按什么步骤、贴什么 prompt 模板、关键配置点。客户端拉这份 JSON 替换内嵌列表。",
+  "workflows": [
+    {
+      "slug": "claude-code-review",
+      "title": "用 Claude Code 做代码 review",
+      "subtitle": "三步把一个 PR 从「能跑」review 到「能合」",
+      "category": "coding",
+      "difficulty": "easy",
+      "minutes": 10,
+      "tools": ["claude-code"],
+      "optionalTools": ["gh-cli"],
+      "blurb": "适合给同事或自己 PR 做严肃 review。核心是「让 Claude 先列风险点，再针对每点给具体 fix」，而不是让它一股脑给「LGTM」。",
+      "steps": [
+        {
+          "title": "第 1 步：拉到本地 + 让 Claude 摸底",
+          "body": "在仓库里 `git checkout pr-branch` 后跑 `claude --dangerously-skip-permissions` 进入 Claude Code。先让 Claude 用 `/init` 索引代码库，再贴第一段 prompt 让它列风险面。",
+          "prompt": "/init 索引完后，请你把这个 PR 的改动按风险面分组列出来。每组只列「可能出问题的点」，不要给修复建议。包括：1) 边界条件 2) 并发安全 3) 错误处理 4) 安全漏洞 5) 性能瓶颈 6) 不一致命名/风格。每点引用具体 file:line。"
+        },
+        {
+          "title": "第 2 步：逐点深挖 + 给 fix patch",
+          "body": "拿到风险清单后，**一次只问一点**——别批量。每点要 Claude 出可直接 git apply 的 diff，并解释「为什么这样修」。",
+          "prompt": "针对你刚才列的第 {N} 点，请：1) 复述具体场景（什么输入会触发） 2) 给出最小修复 diff 3) 解释为何这样修而不是其他方式 4) 评估这个修法对其他文件是否有连带影响。"
+        },
+        {
+          "title": "第 3 步：终评 + 出 review 评论",
+          "body": "全部修完后让 Claude 用「reviewer 视角」对最终 diff 做总评——这是要贴回 GitHub PR comment 的内容。",
+          "prompt": "现在以 staff engineer 的 reviewer 视角对最终的 PR diff 做总评：要发布到 GitHub PR comment。结构：1) Approve / Request Changes / Comment 一句话 2) 必修 3 点 3) 建议但不阻塞 3 点 4) 最后一句「合并前 / 合并后」分别该做什么。"
+        }
+      ],
+      "configHints": [
+        "在仓库根加 `CLAUDE.md`，把项目特有的「critical 约定」写进去（比如「TS 严格模式必须 pass」「修改 schema 必须同步迁移」）——Claude review 时会自动遵守。",
+        "在 `~/.claude/settings.json` 里把 `model` 设成 opus 系列（review 任务对推理深度敏感，Sonnet/Haiku 容易漏点）。"
+      ],
+      "outputs": ["可直接贴回 GitHub 的 review comment", "若干已 apply 的修复 commit"]
+    },
+    {
+      "slug": "claude-code-refactor",
+      "title": "用 Claude Code 做大规模重构",
+      "subtitle": "「改名一个核心模块」「抽出一个新层」「迁移一个 API 版本」",
+      "category": "coding",
+      "difficulty": "medium",
+      "minutes": 30,
+      "tools": ["claude-code"],
+      "optionalTools": [],
+      "blurb": "重构最大的坑是「Claude 一次想改 30 个文件，最后乱套」。正确姿势是先让它出 plan、再分批 apply、每批跑一次 test 才过下一批。",
+      "steps": [
+        {
+          "title": "第 1 步：让 Claude 先出可执行的拆解 plan",
+          "body": "禁止它直接动文件。先要一份「分批 plan」——每批改什么、为什么这一批必须先改、改完怎么验证。",
+          "prompt": "我要做这个重构：{重构目标}。在你动任何文件之前，请输出一份分批拆解 plan：每批 ≤5 文件、独立可编译可 test、有明确「改完跑什么命令验证」。先列 plan 再问我能否开始。"
+        },
+        {
+          "title": "第 2 步：一批一批 apply + 验证",
+          "body": "用 plan 里的批次号让 Claude 改。每批改完先 git status 看影响面、跑 test、用 git diff 自己 review。",
+          "prompt": "请执行第 {批号} 批。改完后：1) 跑你计划里写的验证命令 2) 把 git diff 总结一段「这批做了什么」 3) 标出任何「在 plan 之外但你认为必须一起改的」并解释。"
+        },
+        {
+          "title": "第 3 步：每完成 3 批做一次 squash commit",
+          "body": "让 Claude 帮你把 3 个 WIP commit 合成一个有清晰 message 的 commit。这一步是为了未来 git blame / git bisect 友好。",
+          "prompt": "把最近 3 个 WIP commit squash 成一个：commit message 用 conventional commit 格式，body 列「为什么这一批 / 影响哪些模块 / 验证怎么过的」。"
+        }
+      ],
+      "configHints": [
+        "`CLAUDE.md` 里加一节「重构原则」：「永远不一次改超过 5 个文件 / 每批必须能独立编译 / 重构 commit 不混 feature」——Claude 会自动遵守。",
+        "把 `~/.claude/settings.json` 里的 `autoApprove` 关掉——重构时手动每个 edit 都批一遍是值得的，比事后回滚便宜。"
+      ],
+      "outputs": ["clean 的 commit history", "test pass 的最终代码"]
+    },
+    {
+      "slug": "cursor-multifile-edit",
+      "title": "用 Cursor 跨多文件改造",
+      "subtitle": "Composer 模式 + 精确 context 投喂的最佳姿势",
+      "category": "coding",
+      "difficulty": "easy",
+      "minutes": 15,
+      "tools": ["cursor"],
+      "optionalTools": [],
+      "blurb": "Cursor 默认会把整个项目当 context 喂给模型——慢且容易跑题。靠 `@File` / `@Folder` / `@Codebase` 显式指定能让生成质量飞跃。",
+      "steps": [
+        {
+          "title": "第 1 步：Cmd-I 进 Composer + 显式 @ 引用",
+          "body": "按 Cmd-I 进 Composer 模式（不是 inline edit）。开头先用 @ 显式引用要改的文件 + 相关参考文件。",
+          "prompt": "我要做：{改造目标}\n要修改: @file1 @file2\n参考实现: @file3\n约束：1) 不动 @file2 的 public API 2) 跟 @file3 风格保持一致\n请先描述你打算改的每个文件做什么，确认后再写代码。"
+        },
+        {
+          "title": "第 2 步：Accept 时分块审，不要一键全 accept",
+          "body": "Cursor 改完会给一个「Accept All」按钮——别按。逐文件按 Cmd-Y / Cmd-N 单独审，把不合理的拒掉。",
+          "prompt": "（这一步是手工操作，不是 prompt）"
+        },
+        {
+          "title": "第 3 步：用 `Edit Selected` 而不是 Composer 收尾",
+          "body": "Composer 改完大方向后，细节微调用 Cmd-K 选中那段直接 inline edit——比再开 Composer 快 5 倍。",
+          "prompt": "（在 Cmd-K 弹框里直接说）把这段改成 {具体要求}，保持函数签名不变。"
+        }
+      ],
+      "configHints": [
+        "项目根加 `.cursorrules`：「修改函数前必须先看其调用方 / 不要无故添加 try-catch / 注释只写 why 不写 what」。",
+        "Cursor Settings → Models → 把 Composer 模型设成 claude-sonnet-4 系列（GPT-4o 多文件容易掉细节）。"
+      ],
+      "outputs": ["Cursor 自动批好的多文件 commit"]
+    },
+    {
+      "slug": "ollama-local-rag",
+      "title": "Ollama + 本地知识库 RAG",
+      "subtitle": "用本地模型查自己的笔记 / 文档 / 历史代码，不联网",
+      "category": "knowledge",
+      "difficulty": "medium",
+      "minutes": 60,
+      "tools": ["ollama"],
+      "optionalTools": ["lm-studio"],
+      "blurb": "把 Notion/Obsidian/项目文档喂给本地嵌入模型，搭一个查询入口。完全离线，敏感资料不外泄。",
+      "steps": [
+        {
+          "title": "第 1 步：拉嵌入模型 + 推理模型",
+          "body": "嵌入模型负责把文档切片向量化；推理模型负责根据找回的片段答你的问题。两者要分开。",
+          "prompt": "（终端运行）\n```\nollama pull nomic-embed-text  # 嵌入\nollama pull qwen2.5:7b         # 推理（M2 16GB 起步）\n```\n如果你 32GB+，推理模型可换 `qwen2.5:14b` 或 `llama3.1:8b`。"
+        },
+        {
+          "title": "第 2 步：用 LangChain / LlamaIndex 切片入库",
+          "body": "把 ~/Documents/notes 或 Obsidian vault 喂给嵌入模型，存到本地 chroma / sqlite-vec。",
+          "prompt": "（这一步靠脚本，不是聊天）。Cleana 后续会给一键 starter 脚本——目前先用社区模板。"
+        },
+        {
+          "title": "第 3 步：聊天时显式带 RAG context",
+          "body": "对每个问题先做向量召回 top 5 片段，把片段拼到 prompt 里再问 Ollama 推理模型。",
+          "prompt": "你将基于以下从我个人笔记中检索到的片段回答问题：\n---片段开始---\n{retrieved_chunks}\n---片段结束---\n问题：{user_question}\n规则：1) 只用提供的片段，找不到答案就说「笔记里没相关内容」2) 引用每段片段的来源文件路径。"
+        }
+      ],
+      "configHints": [
+        "`~/.ollama` 默认在主盘——模型大了要挪到外接盘：`launchctl setenv OLLAMA_MODELS /Volumes/External/ollama-models`。",
+        "M 系列芯片把 `OLLAMA_NUM_PARALLEL=2` 同时跑两路（嵌入 + 推理），16GB 起。"
+      ],
+      "outputs": ["本地可查询自己资料的 CLI / 简易 web UI"]
+    },
+    {
+      "slug": "claude-cursor-pair",
+      "title": "Claude Code + Cursor 双开协作",
+      "subtitle": "Claude 当 architect，Cursor 当 typist——分工不打架",
+      "category": "coding",
+      "difficulty": "medium",
+      "minutes": 20,
+      "tools": ["claude-code", "cursor"],
+      "optionalTools": [],
+      "blurb": "两个工具同开容易乱：都改同一份文件、互相撤销。约定职责能消除冲突——Claude 只负责「定方向 / 做大改」，Cursor 只负责「细节微调 / 调试」。",
+      "steps": [
+        {
+          "title": "第 1 步：开局让 Claude 出 design + 第一版骨架",
+          "body": "让 Claude Code 写「能跑但不完美」的版本。Cursor 此时关闭（防止 file watcher 抢）。",
+          "prompt": "请实现 {功能描述}。要求：1) 文件结构骨架先就位（即使内容是 TODO） 2) 关键 type / interface 写完整 3) 业务逻辑可以是 TODO + 注释「Cursor 接力填这里」。"
+        },
+        {
+          "title": "第 2 步：Cursor 接力填 TODO",
+          "body": "关掉 Claude，开 Cursor。用 Cmd-K 选中每个 TODO 注释，让 Cursor 填具体实现。",
+          "prompt": "（在 Cursor Cmd-K 里）实现这段 TODO：{TODO 描述}。约束：保持函数签名 / 用项目已有的 utils / 不引入新依赖。"
+        },
+        {
+          "title": "第 3 步：再回 Claude 做 review + 调整大方向",
+          "body": "Cursor 把细节填完后，回 Claude Code 跑 `/review` 让它从架构层看一遍——发现 Cursor 在细节上是否走偏了大方向。",
+          "prompt": "/review 重点看：Cursor 在我刚才让它填的 TODO 里，是否 1) 引入了新依赖 2) 改了函数签名 3) 偏离了第一版 design 的意图。列具体 file:line。"
+        }
+      ],
+      "configHints": [
+        "两边都用同一份 `CLAUDE.md` / `.cursorrules`（cleana 的「跨工具同步」可以一键做这件事）",
+        "git commit 用前缀分工：`arch:` Claude 主导的 / `impl:` Cursor 主导的——半年后翻 git log 一眼看出每段是哪边写的。"
+      ],
+      "outputs": ["分工清晰的 commit history", "比单边产出质量更高的代码"]
+    },
+    {
+      "slug": "ai-write-translate",
+      "title": "用 AI 工具做严肃翻译",
+      "subtitle": "技术博客 / 论文 / 长文档 EN ↔ ZH，保持原作者声音",
+      "category": "writing",
+      "difficulty": "easy",
+      "minutes": 30,
+      "tools": ["claude-code"],
+      "optionalTools": ["cursor"],
+      "blurb": "GPT/Claude 默认翻译会丢「作者声音」（语气、节奏、术语偏好）。三段式翻译能保留风格 + 术语一致。",
+      "steps": [
+        {
+          "title": "第 1 步：先让模型读完整篇，提取「风格 + 术语表」",
+          "body": "不要直接喂段落让它翻——先让它读全文，提一份给翻译用的参考资料。",
+          "prompt": "这是一篇 {领域} 的 {EN/ZH} 文章。在翻译之前，请先：1) 用 5 句话总结作者的写作风格（句子长度 / 正式度 / 比喻多寡 / 是否带技术幽默）2) 提取本文的核心术语 10-20 个，给出建议的中文/英文译法。\n\n文章：{原文}"
+        },
+        {
+          "title": "第 2 步：分段翻译，每段都带术语表 + 风格说明",
+          "body": "现在每个段落单独翻——把刚才的术语表 + 风格说明拼到 prompt 顶部。",
+          "prompt": "你正在帮我翻译一篇 {EN/ZH} 文章。\n风格要求：{第 1 步产出的风格}\n术语表：{第 1 步产出的术语}\n规则：保留原文的代码块 / 链接 / 表格不动。\n请翻译以下段落：\n{段落}"
+        },
+        {
+          "title": "第 3 步：让另一个模型做 reverse-check",
+          "body": "把译文喂给另一家模型（比如 Claude → GPT，或反之）让它倒译回去——若倒译跟原文相差太远说明前一步有偏差。",
+          "prompt": "请把以下 {ZH/EN} 文本倒译回 {EN/ZH}，不要润色，要求字面忠实。然后跟我提供的原文对比，列出语义偏差超过 10% 的句子。"
+        }
+      ],
+      "configHints": [
+        "在 `CLAUDE.md` / 通用 prompt config 里固定：「翻译时不主动添加原文没有的解释 / 不展开缩写」。",
+        "长文（>3000 字）拆成多个 conversation 做，避免上下文窗口被吃光。"
+      ],
+      "outputs": ["保留作者声音的双语对照"]
+    },
+    {
+      "slug": "aider-incremental-port",
+      "title": "用 Aider 做语言迁移",
+      "subtitle": "Python → TypeScript / JavaScript → Go 等大型 port",
+      "category": "coding",
+      "difficulty": "hard",
+      "minutes": 90,
+      "tools": ["aider"],
+      "optionalTools": ["claude-code"],
+      "blurb": "Aider 的 git-aware + auto-commit 模式特别适合 port——每个文件一个 commit，出问题随时 git revert。",
+      "steps": [
+        {
+          "title": "第 1 步：让 Aider 先建好目标语言的脚手架",
+          "body": "在新仓库里跑 aider，先让它把 package.json / tsconfig 等脚手架建好——不要碰业务代码。",
+          "prompt": "我要把 {源语言} 项目 port 到 {目标语言}。请先建脚手架：package manager 配置、构建工具、test runner、linter。不要动业务逻辑文件。"
+        },
+        {
+          "title": "第 2 步：从 leaf 模块往 root port",
+          "body": "依赖图最叶子的模块（utils / pure functions）先 port——它们没下游依赖，port 完不会卡其他模块。Aider 每次 add 一个源文件 + 对应目标文件。",
+          "prompt": "/add src/utils/string-helpers.py\n/add src/utils/string-helpers.ts\n请把 string-helpers.py port 成 TypeScript，要求：1) 同名同语义 2) 类型注解齐全 3) 写最小 unit test。"
+        },
+        {
+          "title": "第 3 步：每 port 一批跑一次 test diff",
+          "body": "Aider 自动 commit，但你要每 5-10 个文件主动跑「源 / 目标」test 对比——同样输入产出是否一致。",
+          "prompt": "/run npm test\n/run pytest tests/test_string_helpers.py\n请对比两边 test 输出，列出语义不一致的点。"
+        }
+      ],
+      "configHints": [
+        "项目根写 `.aider.conf.yml`：`auto-commits: true`、`model: claude-sonnet-4`、`test-cmd: 'npm test && pytest'`。",
+        "Port 期间禁用 IDE 的 auto-format（避免 Aider 的 commit 跟 IDE 的格式 commit 抢）。"
+      ],
+      "outputs": ["逐文件可追溯的 git history", "源/目标双向 test pass"]
+    },
+    {
+      "slug": "claude-debug-stack",
+      "title": "用 Claude Code 调 stack trace",
+      "subtitle": "线上 panic / unhandled exception 复盘",
+      "category": "debug",
+      "difficulty": "easy",
+      "minutes": 15,
+      "tools": ["claude-code"],
+      "optionalTools": [],
+      "blurb": "线上事故拿到一段 stack trace + 当时的请求体，让 Claude 在 5 分钟内给「最可能的根因 + 复现 case」。",
+      "steps": [
+        {
+          "title": "第 1 步：贴完整 stack trace + 上下文",
+          "body": "不要只贴 top frame——把整个 stack 一起贴，外加事故时的请求 / DB 状态 / 上次 deploy 时间。",
+          "prompt": "线上事故 stack trace：\n{完整 stack}\n上下文：\n- 当时请求：{request payload}\n- 当时 DB 关联记录：{relevant rows}\n- 上次 deploy：{commit hash + 改了什么}\n请：1) 给 3 个最可能的根因（按概率排序）2) 每个根因给一个最小复现 case。"
+        },
+        {
+          "title": "第 2 步：让 Claude 写最小复现 test",
+          "body": "拿最可能的根因，让 Claude 写一个会失败的 unit test——这是修复 PR 的「必修证据」。",
+          "prompt": "针对你的第 1 个根因猜测，请写一个 unit test 能在我本地复现这个 panic。test 必须：1) 不依赖外部服务 2) 跑得快（<1s）3) assertion 明确指向「应该 X 但实际 Y」。"
+        },
+        {
+          "title": "第 3 步：修 + 让 test 由红转绿",
+          "body": "Claude 写完 test 跑一遍确认它确实红，再让它给 fix。fix + test 是一个 commit。",
+          "prompt": "test 跑出来确实红，错误是：{贴错误}。请给最小修复 patch，这个 patch 应该让上面的 test 由红转绿。修复时不要改测试断言。"
+        }
+      ],
+      "configHints": [
+        "在 `~/.claude/settings.json` 加 system prompt：「调 bug 时永远先写复现 test 再写 fix；fix 不可改测试断言」——Claude 会强制这个流程。"
+      ],
+      "outputs": ["复现 test + fix patch 一个 commit"]
+    },
+    {
+      "slug": "lm-studio-private-coding",
+      "title": "LM Studio 跑本地代码助手",
+      "subtitle": "敏感代码不能上云时的离线方案",
+      "category": "knowledge",
+      "difficulty": "easy",
+      "minutes": 20,
+      "tools": ["lm-studio"],
+      "optionalTools": ["ollama"],
+      "blurb": "如果公司要求代码不能给云端 LLM 看，LM Studio 起本地 OpenAI 兼容 API + 配合 Continue.dev 插件，能在 VS Code 里得到「可工作」的本地补全。",
+      "steps": [
+        {
+          "title": "第 1 步：选适合编码的本地模型",
+          "body": "LM Studio 里搜「Qwen2.5-Coder-7B-Instruct」（M2 16GB 起）或「Qwen2.5-Coder-14B」（32GB+）。代码任务不要用通用模型。",
+          "prompt": "（GUI 操作）\n1. LM Studio → Discover → 搜 'Qwen2.5-Coder'\n2. 选 7B-Instruct（如果 RAM ≥ 16GB），下 Q4_K_M 量化版\n3. 下完到 Chat 页加载"
+        },
+        {
+          "title": "第 2 步：开 LM Studio 本地 server",
+          "body": "Server 页 → Start Server → 默认 localhost:1234。这就是个 OpenAI 兼容端点。",
+          "prompt": "（GUI 操作）\nServer → Start Server → 确认端点 http://localhost:1234/v1\nCORS 打开（VS Code 插件需要）"
+        },
+        {
+          "title": "第 3 步：VS Code Continue 插件接本地 server",
+          "body": "Continue 的 config.json 把 model provider 设成 LM Studio 的 endpoint，apiKey 留空。",
+          "prompt": "（编辑 ~/.continue/config.json）\n```json\n{\n  \"models\": [{\n    \"title\": \"Qwen Coder 7B (local)\",\n    \"provider\": \"openai\",\n    \"model\": \"local-model\",\n    \"apiBase\": \"http://localhost:1234/v1\",\n    \"apiKey\": \"\"\n  }]\n}\n```"
+        }
+      ],
+      "configHints": [
+        "LM Studio 启动参数加 `--gpu-layers 99` 把所有层放显存——Apple Silicon Metal 加速，速度提升 5-10 倍。",
+        "代码补全要把模型的 context length 拉到 8K+，否则跨文件理解差。"
+      ],
+      "outputs": ["VS Code 里离线代码补全 / 聊天"]
+    },
+    {
+      "slug": "claude-md-bootstrap",
+      "title": "为新项目生成第一份 CLAUDE.md",
+      "subtitle": "5 分钟让 Claude Code 在你这个项目里聪明一档",
+      "category": "config",
+      "difficulty": "easy",
+      "minutes": 5,
+      "tools": ["claude-code"],
+      "optionalTools": [],
+      "blurb": "新项目 Claude 完全不知道你的约定——一份好 CLAUDE.md 立刻能让它产出质量翻倍。这条 workflow 教你怎么让 Claude 自己帮你写第一版 CLAUDE.md。",
+      "steps": [
+        {
+          "title": "第 1 步：让 Claude 先扫一遍仓库",
+          "body": "在仓库根跑 claude，先 `/init` 索引代码。",
+          "prompt": "/init"
+        },
+        {
+          "title": "第 2 步：让它根据扫到的内容自己起草 CLAUDE.md",
+          "body": "贴这段——它会输出一个项目特化的 CLAUDE.md 草稿。",
+          "prompt": "请给这个项目起草 CLAUDE.md，包括以下小节：\n1) 一句话产品定位（猜不到就标 TODO）\n2) 技术栈 / 构建命令 / 运行命令\n3) 代码风格关键约定（你能从已有代码 infer 的）\n4) 目录结构说明（为什么这么分）\n5) 「重要！别做」清单（防止你下次 review PR 反复说同一件事）\n6) 测试 / lint / CI 命令\n你只能基于实际看到的代码写，禁止编造。看不到的项写 TODO 让我自己填。"
+        },
+        {
+          "title": "第 3 步：用 Cleana 配置教练打分",
+          "body": "起草完写到 `CLAUDE.md` → 回 Cleana 主屏 → AI 配置教练 → 重新扫描。会给出「差几分到 Top 1%」的具体改进建议。",
+          "prompt": "（在 Cleana 内操作，不是 prompt）"
+        }
+      ],
+      "configHints": [
+        "首版 CLAUDE.md 不要追求完美——3-4 节足够。每次 Claude 犯错你就把对应规则补到 CLAUDE.md，半年后它会变得很完整。",
+        "把 CLAUDE.md commit 进 git——团队成员共享受益。"
+      ],
+      "outputs": ["项目根的 CLAUDE.md（团队共享）"]
+    }
+  ]
+}
