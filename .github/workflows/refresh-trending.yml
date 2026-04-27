@@ -1,0 +1,74 @@
+name: Refresh GitHub trending
+
+# 每 24h 拉一次 GitHub search API（按 ai-agents / llm / agentic / claude-code /
+# rag / mcp 等 topic 过滤 + stars > 50）→ 写到 github-trending.json → 提交到 main。
+# 客户端 Cleana 只拉 raw.githubusercontent，零 GitHub API 配额负担。
+
+on:
+  schedule:
+    - cron: '17 4 * * *'    # 每天 04:17 UTC（北京 12:17）
+  workflow_dispatch:        # 手动触发
+
+permissions:
+  contents: write           # 写回 github-trending.json
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull GitHub trending repos
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          today=$(date +%Y-%m-%d)
+          last_week=$(date -u -d '7 days ago' +%Y-%m-%d)
+
+          # 关心的 topic 列表（按 OR 拼）。stars:>50 是反垃圾门槛。
+          topics='topic:ai-agents OR topic:llm OR topic:agentic OR topic:claude-code OR topic:rag OR topic:mcp OR topic:ai-coding'
+          query="${topics} created:>${last_week} stars:>50"
+
+          # 拉前 30 个
+          gh api -X GET search/repositories \
+            -f q="$query" \
+            -f sort=stars \
+            -f order=desc \
+            -f per_page=30 \
+            > /tmp/raw.json
+
+          # 转成 cleana 的 schema
+          jq --arg today "$today" --arg week "$last_week" '
+            {
+              version: 1,
+              weekOf: $week,
+              updatedAt: $today,
+              note: "GitHub Action 每 24h 自动更新。",
+              entries: [.items[] | {
+                id: ("gh-" + (.full_name | gsub("/"; "-") | ascii_downcase)),
+                name: .name,
+                blurb: (.description // "（暂无描述）"),
+                category: (if .stargazers_count > 1000 then "trending"
+                           elif .stargazers_count > 200 then "new"
+                           else "niche" end),
+                tagline: (.topics | join(" · ")),
+                installHint: ("git clone " + .html_url),
+                homepage: .html_url,
+                source: "github-trending",
+                publishedAt: (.created_at | sub("T.*"; "")),
+                starsThisWeek: .stargazers_count
+              }]
+            }' /tmp/raw.json > github-trending.json
+
+          # 不变就不 commit
+          if git diff --quiet github-trending.json; then
+            echo "No change."
+            exit 0
+          fi
+
+          git config user.name 'cleana-bot'
+          git config user.email 'cleana-bot@users.noreply.github.com'
+          git add github-trending.json
+          git commit -m "chore: refresh github-trending ${today}"
+          git push

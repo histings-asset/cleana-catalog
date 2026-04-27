@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "weekOf": "2026-04-21",
+  "updatedAt": "2026-04-27",
+  "note": "GitHub trending（按 star 周增量 + AI 相关 topics 过滤）。本来应该 GitHub Action 每 24h 跑一次自动更新；当前是手工种子数据。客户端会跟 discover-feed.json 合并展示，每条带 source: github-trending 标记。",
+  "entries": [
+    {
+      "id": "gh-block-3000",
+      "name": "block",
+      "blurb": "Block.so 开源的 AI 桌面 agent，可调多家模型 + MCP server。本周 +2.3k stars。",
+      "category": "trending",
+      "tagline": "agent · multi-model · MCP",
+      "installHint": "brew install block",
+      "homepage": "https://github.com/block/goose",
+      "source": "github-trending",
+      "publishedAt": "2026-04-25",
+      "starsThisWeek": 2300
+    },
+    {
+      "id": "gh-cline",
+      "name": "Cline",
+      "blurb": "VS Code 里的 AI 自主 coding agent，本周持续在 trending 榜，最近版本接了 OpenRouter / 本地 Ollama。",
+      "category": "trending",
+      "tagline": "vscode · agent · ollama-ready",
+      "installHint": "code --install-extension saoudrizwan.claude-dev",
+      "homepage": "https://github.com/cline/cline",
+      "source": "github-trending",
+      "publishedAt": "2026-04-24",
+      "starsThisWeek": 1800
+    },
+    {
+      "id": "gh-roo-cline",
+      "name": "Roo Cline",
+      "blurb": "Cline 的高级分支：自定义 mode、多模型协作、prompt 引擎。本周 +1.4k。",
+      "category": "trending",
+      "tagline": "vscode · multi-mode · advanced",
+      "installHint": "code --install-extension RooVeterinaryInc.roo-cline",
+      "homepage": "https://github.com/RooCodeInc/Roo-Code",
+      "source": "github-trending",
+      "publishedAt": "2026-04-23",
+      "starsThisWeek": 1400
+    },
+    {
+      "id": "gh-aider-trending",
+      "name": "Aider",
+      "blurb": "Git-aware AI 配对编程 CLI，多语言 port + 可换任意模型。本周稳定上榜。",
+      "category": "trending",
+      "tagline": "cli · git-aware · multi-model",
+      "installHint": "pip install aider-chat",
+      "homepage": "https://github.com/Aider-AI/aider",
+      "source": "github-trending",
+      "publishedAt": "2026-04-22",
+      "starsThisWeek": 950
+    },
+    {
+      "id": "gh-anthropic-skills",
+      "name": "anthropic-cookbook / skills",
+      "blurb": "Anthropic 官方维护的 Claude Code skill 仓库，含调试 / 代码 review / shipping 等几十种结构化 skill。",
+      "category": "new",
+      "tagline": "skills · official · claude-code",
+      "installHint": "git clone https://github.com/anthropics/anthropic-cookbook ~/.claude/skills-cookbook",
+      "homepage": "https://github.com/anthropics/anthropic-cookbook",
+      "source": "github-trending",
+      "publishedAt": "2026-04-26",
+      "starsThisWeek": 800
+    },
+    {
+      "id": "gh-llamafile",
+      "name": "llamafile",
+      "blurb": "Mozilla 出的「单二进制跑大模型」方案。一个 .llamafile 双击就跑，跨平台。",
+      "category": "niche",
+      "tagline": "single-binary · cross-platform · llm",
+      "installHint": "brew install llamafile",
+      "homepage": "https://github.com/Mozilla-Ocho/llamafile",
+      "source": "github-trending",
+      "publishedAt": "2026-04-21",
+      "starsThisWeek": 600
+    },
+    {
+      "id": "gh-mlx-vlm",
+      "name": "mlx-vlm",
+      "blurb": "Apple Silicon MLX 框架的视觉语言模型支持库——M 系列芯片跑 Qwen2.5-VL / Pixtral 等。",
+      "category": "new",
+      "tagline": "mlx · apple-silicon · vlm",
+      "installHint": "pip install mlx-vlm",
+      "homepage": "https://github.com/Blaizzy/mlx-vlm",
+      "source": "github-trending",
+      "publishedAt": "2026-04-20",
+      "starsThisWeek": 520
+    },
+    {
+      "id": "gh-opencode-w17",
+      "name": "OpenCode",
+      "blurb": "Bun 跑的开源 AI 编程终端，AGENTS.md 兼容，Codex 平替。",
+      "category": "stack",
+      "tagline": "open-source · terminal · agentic",
+      "installHint": "npm install -g opencode-ai",
+      "homepage": "https://github.com/opencode-ai/opencode",
+      "source": "github-trending",
+      "publishedAt": "2026-04-22",
+      "starsThisWeek": 480
+    }
+  ]
+}
