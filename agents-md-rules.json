@@ -1,18 +1,48 @@
 {
-  "version": 1,
+  "version": 2,
   "updatedAt": "2026-04-27",
-  "note": "AI 配置教练（CLAUDE.md / .cursorrules / AGENTS.md / 等）的评分规则。客户端拿这份规则集给本地配置文件打分；分越高 = 越接近 Top 1% 用户的写法。",
+  "note": "AI 配置教练（CLAUDE.md / .cursorrules / AGENTS.md / 等）的评分规则。客户端拿这份规则集给本地配置文件打分；分越高 = 越接近 Top 1% 用户的写法。每条规则可附 patchTemplate——失败时 UI 上显示「插入模板」按钮，一键 append 到文件末尾（带备份）。",
   "dimensions": [
     {
       "key": "structure",
       "name": "结构完整性",
       "weight": 25,
       "checks": [
-        { "id": "has_title", "desc": "顶部是否有 # 一级标题", "regex": "^#\\s+[^\\n]+", "score": 5 },
-        { "id": "has_pitch", "desc": "标题下是否有产品定位 / 一句话介绍", "minLines": 1, "score": 5 },
-        { "id": "has_run_section", "desc": "是否说明运行 / 打包命令", "kw": ["运行", "打包", "build", "run", "swift run", "npm run", "pip"], "score": 5 },
-        { "id": "has_tech_stack", "desc": "是否列出技术栈 / 框架版本", "kw": ["技术栈", "依赖", "tech stack", "framework", "version"], "score": 5 },
-        { "id": "has_dir_tree", "desc": "是否有目录结构 ASCII 树", "regex": "├─|└─|│", "score": 5 }
+        {
+          "id": "has_title",
+          "desc": "顶部是否有 # 一级标题",
+          "regex": "^#\\s+[^\\n]+",
+          "score": 5,
+          "patchTemplate": "# {项目名}\n\n> {一句话产品定位 / 它是干嘛的}"
+        },
+        {
+          "id": "has_pitch",
+          "desc": "标题下是否有产品定位 / 一句话介绍",
+          "minLines": 1,
+          "score": 5,
+          "patchTemplate": "## 产品定位\n\nTODO: 一句话写清楚\n- 这是什么\n- 解决谁的什么痛\n- 跟现有方案的差异点"
+        },
+        {
+          "id": "has_run_section",
+          "desc": "是否说明运行 / 打包命令",
+          "kw": ["运行", "打包", "build", "run", "swift run", "npm run", "pip"],
+          "score": 5,
+          "patchTemplate": "## 运行 / 打包\n\n```sh\n# 开发\nTODO: 写你常用的开发命令（如 swift run / npm run dev）\n\n# 测试\nTODO: 写跑测试命令\n\n# 打包\nTODO: 写出 release artifact 的命令\n```"
+        },
+        {
+          "id": "has_tech_stack",
+          "desc": "是否列出技术栈 / 框架版本",
+          "kw": ["技术栈", "依赖", "tech stack", "framework", "version"],
+          "score": 5,
+          "patchTemplate": "## 技术栈\n\n- **语言**: TODO（如 Swift 5.9+ / TypeScript 5.x）\n- **框架**: TODO（如 SwiftUI / Next.js 14）\n- **构建**: TODO（如 SwiftPM / pnpm）\n- **关键依赖**: TODO（列 5-10 个核心依赖 + 用途一句话）\n- **平台 / 版本**: TODO（macOS 13+ / iOS 17+ / Node 20+ 等）"
+        },
+        {
+          "id": "has_dir_tree",
+          "desc": "是否有目录结构 ASCII 树",
+          "regex": "├─|└─|│",
+          "score": 5,
+          "patchTemplate": "## 目录结构\n\n```\nproject-root/\n├── Sources/\n│   ├── App/         # TODO: 这层是干嘛的\n│   └── Core/        # TODO: 这层是干嘛的\n├── Tests/\n└── Package.swift\n```\n\nTODO: 把上面替换成项目的真实目录树，每层后面用 # 注一句它的角色。"
+        }
       ]
     },
     {
@@ -20,9 +50,27 @@
       "name": "权限 / 沙盒说明",
       "weight": 15,
       "checks": [
-        { "id": "tcc", "desc": "是否提到 TCC / 完全磁盘访问 / 隐私权限", "kw": ["TCC", "完全磁盘访问", "Full Disk Access", "FDA", "隐私"], "score": 8 },
-        { "id": "sandbox", "desc": "是否说明沙盒状态", "kw": ["沙盒", "sandbox", "App Sandbox"], "score": 4 },
-        { "id": "network", "desc": "是否说明网络访问范围", "kw": ["网络", "outbound", "endpoint", "API base URL"], "score": 3 }
+        {
+          "id": "tcc",
+          "desc": "是否提到 TCC / 完全磁盘访问 / 隐私权限",
+          "kw": ["TCC", "完全磁盘访问", "Full Disk Access", "FDA", "隐私"],
+          "score": 8,
+          "patchTemplate": "## 权限 / TCC\n\n- macOS 会对 ~/Library / Documents / Desktop / Downloads 等弹隐私授权（TCC）——TODO: 写清楚这个工具会动哪些目录\n- 系统级扫描需要**完全磁盘访问权限（FDA）**：系统设置 → 隐私与安全 → 完全磁盘访问 → 加 Cleana / TODO: 应用名\n- 首次运行会弹 N 次授权，全允许"
+        },
+        {
+          "id": "sandbox",
+          "desc": "是否说明沙盒状态",
+          "kw": ["沙盒", "sandbox", "App Sandbox"],
+          "score": 4,
+          "patchTemplate": "## 沙盒\n\n- TODO: 标明 App Sandbox 是开 / 关\n- 如果关：写清楚为什么必须关（例如：访问 ~/.ollama 等隐藏目录、扫 ~/Library 子目录）\n- 如果开：列了哪些 entitlements（com.apple.security.network.client / files.user-selected.read-write 等）"
+        },
+        {
+          "id": "network",
+          "desc": "是否说明网络访问范围",
+          "kw": ["网络", "outbound", "endpoint", "API base URL"],
+          "score": 3,
+          "patchTemplate": "## 网络访问\n\n- 这个工具只联以下端点：\n  - TODO: 列具体 URL（如 raw.githubusercontent.com 拉 catalog）\n- 不发用户数据到任何分析 / 遥测端点"
+        }
       ]
     },
     {
@@ -30,8 +78,20 @@
       "name": "路径 / 命令示例",
       "weight": 15,
       "checks": [
-        { "id": "abs_paths", "desc": "是否给出绝对路径示例（/Users/... 或 ~/）", "regex": "(/Users/|~/|/opt/|/usr/local/)", "score": 8 },
-        { "id": "shell_blocks", "desc": "是否有 ```sh / ```bash 代码块", "regex": "```\\s*(sh|bash|zsh|shell)", "score": 7 }
+        {
+          "id": "abs_paths",
+          "desc": "是否给出绝对路径示例（/Users/... 或 ~/）",
+          "regex": "(/Users/|~/|/opt/|/usr/local/)",
+          "score": 8,
+          "patchTemplate": "## 关键路径\n\n- 配置: `~/.{appname}/config.json`\n- 缓存: `~/Library/Caches/com.{org}.{appname}/`\n- 日志: `~/Library/Logs/{appname}/`\n- 数据: `~/Library/Application Support/{appname}/`\n\nTODO: 替换成项目实际用的路径。"
+        },
+        {
+          "id": "shell_blocks",
+          "desc": "是否有 ```sh / ```bash 代码块",
+          "regex": "```\\s*(sh|bash|zsh|shell)",
+          "score": 7,
+          "patchTemplate": "## 常用命令\n\n```sh\n# 跑 dev\nTODO: 写命令\n\n# 跑测试\nTODO: 写命令\n\n# 重置 / 清缓存\nTODO: 写命令\n```"
+        }
       ]
     },
     {
@@ -39,9 +99,27 @@
       "name": "领域知识 / 坑",
       "weight": 25,
       "checks": [
-        { "id": "has_pitfalls", "desc": "是否记录踩过的坑 / 反模式 / 历史决定", "kw": ["坑", "踩坑", "陷阱", "注意", "重要", "约定", "pitfall", "gotcha"], "score": 12 },
-        { "id": "has_conservative_rules", "desc": "是否说明保守边界 / 安全护栏", "kw": ["保守", "护栏", "硬排除", "skip", "exclude"], "score": 8 },
-        { "id": "has_constraints", "desc": "是否列项目独有约束", "kw": ["约束", "限制", "前提", "假设"], "score": 5 }
+        {
+          "id": "has_pitfalls",
+          "desc": "是否记录踩过的坑 / 反模式 / 历史决定",
+          "kw": ["坑", "踩坑", "陷阱", "注意", "重要", "约定", "pitfall", "gotcha"],
+          "score": 12,
+          "patchTemplate": "## 重要！踩过的坑\n\n### 坑 1：TODO\n\n- **症状**: 什么时候会出现\n- **根因**: 为什么这个问题难发现\n- **修法**: 现在的代码怎么 workaround / 修复\n- **不要回退**: 直接给某个未来 PR 的 reviewer 看——禁止把 X 改回 Y\n\n### 坑 2：TODO\n\n（同上）\n\nTODO: 每次踩到新的坑，往这里补一段。半年后这一节会救命。"
+        },
+        {
+          "id": "has_conservative_rules",
+          "desc": "是否说明保守边界 / 安全护栏",
+          "kw": ["保守", "护栏", "硬排除", "skip", "exclude"],
+          "score": 8,
+          "patchTemplate": "## 安全护栏（绝不动的清单）\n\n- 禁止 `git push --force` 到 main\n- 禁止改 `~/Library` 下的文件\n- 跳过这些目录: `node_modules` / `.git` / `Pods` / `DerivedData` / `*.app/Contents/`\n- TODO: 加项目特有的禁忌"
+        },
+        {
+          "id": "has_constraints",
+          "desc": "是否列项目独有约束",
+          "kw": ["约束", "限制", "前提", "假设"],
+          "score": 5,
+          "patchTemplate": "## 项目独有约束\n\n- **最低支持版本**: TODO\n- **数据格式假设**: TODO\n- **性能预算**: TODO（如：列表页 < 200ms、扫描完成 < 5s）\n- **已知不支持**: TODO（写清楚什么场景不支持，避免 reviewer 反复问）"
+        }
       ]
     },
     {
@@ -49,9 +127,26 @@
       "name": "跨工具一致性",
       "weight": 20,
       "checks": [
-        { "id": "agents_md", "desc": "项目根存在 AGENTS.md（codex/opencode 兼容）", "fileExists": "AGENTS.md", "score": 8 },
-        { "id": "cursor_rules", "desc": "项目根存在 .cursorrules 或 .cursor/rules/", "fileExists": [".cursorrules", ".cursor/rules"], "score": 6 },
-        { "id": "instructions_synced", "desc": "三处配置（CLAUDE.md / AGENTS.md / .cursorrules）核心约束是否一致", "manualReview": true, "score": 6 }
+        {
+          "id": "agents_md",
+          "desc": "项目根存在 AGENTS.md（codex/opencode 兼容）",
+          "fileExists": "AGENTS.md",
+          "score": 8,
+          "patchTemplate": "<!-- 这条规则提示你项目根缺 AGENTS.md。请直接 cp CLAUDE.md AGENTS.md，让 codex/opencode 等其他 AI 工具也读得到同一份约定。-->\n\n## 同步到 AGENTS.md\n\n```sh\ncp CLAUDE.md AGENTS.md\n```\n\n以后 CLAUDE.md 改完，记得同步——或者用 Cleana 的「跨工具同步」功能（配置教练详情页）。"
+        },
+        {
+          "id": "cursor_rules",
+          "desc": "项目根存在 .cursorrules 或 .cursor/rules/",
+          "fileExists": [".cursorrules", ".cursor/rules"],
+          "score": 6,
+          "patchTemplate": "<!-- 项目根缺 .cursorrules。Cursor 看不到 CLAUDE.md，需要专门一份。-->\n\n## 给 Cursor 的核心约束（同步到 .cursorrules）\n\n请在项目根创建 `.cursorrules`，先粘下面这些「跨工具通用」的最小约定：\n\n```\n- 修改函数前必须先看其调用方\n- 不要无故添加 try-catch\n- 注释只写 why 不写 what\n- 改完跑 npm test / swift test 自查\n- 不超过 5 个文件一次改\n```\n\nTODO: 把项目特有的约定也补一份进去。"
+        },
+        {
+          "id": "instructions_synced",
+          "desc": "三处配置（CLAUDE.md / AGENTS.md / .cursorrules）核心约束是否一致",
+          "manualReview": true,
+          "score": 6
+        }
       ]
     }
   ]
