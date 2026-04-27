@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-27",
+  "note": "Cleana 模型柜推荐目录——按硬件能力 + 用途分桶。客户端按本机 RAM 过滤显示「适合你这台 Mac 的模型」。每条带一键 ollama pull 命令。",
+  "models": [
+    {
+      "id": "qwen2.5-coder-7b",
+      "name": "Qwen2.5 Coder 7B",
+      "blurb": "代码补全 + chat 通吃。本地 IDE 接 Continue 用，比小模型聪明一档。",
+      "minRamGB": 16,
+      "recommendedRamGB": 32,
+      "sizeGB": 4.7,
+      "category": "coding",
+      "pullCommand": "ollama pull qwen2.5-coder:7b",
+      "tags": ["code", "fast", "Apple Silicon 友好"]
+    },
+    {
+      "id": "qwen2.5-coder-14b",
+      "name": "Qwen2.5 Coder 14B",
+      "blurb": "比 7B 推理深一档；32GB+ 跑得动；多文件 refactor 比 7B 强。",
+      "minRamGB": 32,
+      "recommendedRamGB": 48,
+      "sizeGB": 9.0,
+      "category": "coding",
+      "pullCommand": "ollama pull qwen2.5-coder:14b",
+      "tags": ["code", "balanced"]
+    },
+    {
+      "id": "qwen2.5-coder-32b",
+      "name": "Qwen2.5 Coder 32B",
+      "blurb": "本地最强的编码模型之一。M3 Max 64GB 起跑得舒服。",
+      "minRamGB": 48,
+      "recommendedRamGB": 64,
+      "sizeGB": 19,
+      "category": "coding",
+      "pullCommand": "ollama pull qwen2.5-coder:32b",
+      "tags": ["code", "heavy", "推理深"]
+    },
+    {
+      "id": "llama3.1-8b",
+      "name": "Llama 3.1 8B",
+      "blurb": "通用对话 + 写作。起步推荐——M2 16GB 都跑得动。",
+      "minRamGB": 16,
+      "recommendedRamGB": 24,
+      "sizeGB": 4.9,
+      "category": "general",
+      "pullCommand": "ollama pull llama3.1:8b",
+      "tags": ["general", "chat", "首选起步"]
+    },
+    {
+      "id": "llama3.3-70b",
+      "name": "Llama 3.3 70B",
+      "blurb": "Meta 最新通用模型。64GB 内存能跑 4-bit 量化版；纯 Apple Silicon。",
+      "minRamGB": 48,
+      "recommendedRamGB": 64,
+      "sizeGB": 40,
+      "category": "general",
+      "pullCommand": "ollama pull llama3.3:70b",
+      "tags": ["general", "heavy", "推理强"]
+    },
+    {
+      "id": "deepseek-r1-7b",
+      "name": "DeepSeek R1 7B",
+      "blurb": "推理链式思考模型——本地版「o1-mini」。chain-of-thought 任务表现不错。",
+      "minRamGB": 16,
+      "recommendedRamGB": 24,
+      "sizeGB": 4.7,
+      "category": "reasoning",
+      "pullCommand": "ollama pull deepseek-r1:7b",
+      "tags": ["reasoning", "chain-of-thought"]
+    },
+    {
+      "id": "deepseek-r1-32b",
+      "name": "DeepSeek R1 32B",
+      "blurb": "推理模型 32B 版。M3 Max 才稳。复杂数学/逻辑题适合。",
+      "minRamGB": 48,
+      "recommendedRamGB": 64,
+      "sizeGB": 19,
+      "category": "reasoning",
+      "pullCommand": "ollama pull deepseek-r1:32b",
+      "tags": ["reasoning", "heavy"]
+    },
+    {
+      "id": "nomic-embed-text",
+      "name": "Nomic Embed Text",
+      "blurb": "嵌入模型——给本地 RAG 用，不是聊天。结合 chroma/sqlite-vec 搭知识库。",
+      "minRamGB": 8,
+      "recommendedRamGB": 16,
+      "sizeGB": 0.3,
+      "category": "embedding",
+      "pullCommand": "ollama pull nomic-embed-text",
+      "tags": ["embedding", "RAG", "小巧"]
+    },
+    {
+      "id": "phi-4-14b",
+      "name": "Phi-4 14B",
+      "blurb": "Microsoft 出的 14B 通用模型，强调推理 + 多轮对话。",
+      "minRamGB": 24,
+      "recommendedRamGB": 32,
+      "sizeGB": 8.4,
+      "category": "general",
+      "pullCommand": "ollama pull phi4:14b",
+      "tags": ["general", "Microsoft", "balanced"]
+    },
+    {
+      "id": "qwen2.5-vl-7b",
+      "name": "Qwen2.5 VL 7B",
+      "blurb": "视觉语言模型——能看图说话、读截图。本地多模态用。",
+      "minRamGB": 16,
+      "recommendedRamGB": 24,
+      "sizeGB": 5.0,
+      "category": "vision",
+      "pullCommand": "ollama pull qwen2.5-vl:7b",
+      "tags": ["vision", "multimodal"]
+    }
+  ]
+}
