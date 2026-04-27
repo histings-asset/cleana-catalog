@@ -47,8 +47,11 @@
       "chipFamily": "M2",
       "released": "2022-07",
       "newPriceCNY": 9499,
-      "secondhandCNY": { "good": 6800, "fair": 5500 },
-      "lifespanMonths": 36
+      "secondhandCNY": {
+        "good": 6800,
+        "fair": 5500
+      },
+      "lifespanMonths": 72
     },
     {
       "id": "Mac15,12",
@@ -56,8 +59,11 @@
       "chipFamily": "M3",
       "released": "2024-03",
       "newPriceCNY": 9499,
-      "secondhandCNY": { "good": 7800, "fair": 6500 },
-      "lifespanMonths": 48
+      "secondhandCNY": {
+        "good": 7800,
+        "fair": 6500
+      },
+      "lifespanMonths": 72
     },
     {
       "id": "Mac15,3",
@@ -65,8 +71,11 @@
       "chipFamily": "M3",
       "released": "2023-11",
       "newPriceCNY": 14999,
-      "secondhandCNY": { "good": 11500, "fair": 9500 },
-      "lifespanMonths": 48
+      "secondhandCNY": {
+        "good": 11500,
+        "fair": 9500
+      },
+      "lifespanMonths": 72
     },
     {
       "id": "Mac15,8",
@@ -74,8 +83,11 @@
       "chipFamily": "M3 Pro",
       "released": "2023-11",
       "newPriceCNY": 16999,
-      "secondhandCNY": { "good": 13500, "fair": 11000 },
-      "lifespanMonths": 54
+      "secondhandCNY": {
+        "good": 13500,
+        "fair": 11000
+      },
+      "lifespanMonths": 84
     },
     {
       "id": "Mac15,9",
@@ -83,8 +95,11 @@
       "chipFamily": "M3 Max",
       "released": "2023-11",
       "newPriceCNY": 24999,
-      "secondhandCNY": { "good": 19500, "fair": 16500 },
-      "lifespanMonths": 60
+      "secondhandCNY": {
+        "good": 19500,
+        "fair": 16500
+      },
+      "lifespanMonths": 96
     },
     {
       "id": "Mac15,10",
@@ -92,8 +107,11 @@
       "chipFamily": "M3 Pro",
       "released": "2023-11",
       "newPriceCNY": 19999,
-      "secondhandCNY": { "good": 16000, "fair": 13000 },
-      "lifespanMonths": 54
+      "secondhandCNY": {
+        "good": 16000,
+        "fair": 13000
+      },
+      "lifespanMonths": 84
     },
     {
       "id": "Mac15,11",
@@ -101,8 +119,11 @@
       "chipFamily": "M3 Max",
       "released": "2023-11",
       "newPriceCNY": 27999,
-      "secondhandCNY": { "good": 22500, "fair": 18500 },
-      "lifespanMonths": 60
+      "secondhandCNY": {
+        "good": 22500,
+        "fair": 18500
+      },
+      "lifespanMonths": 96
     },
     {
       "id": "Mac16,1",
@@ -110,8 +131,11 @@
       "chipFamily": "M4",
       "released": "2024-10",
       "newPriceCNY": 14999,
-      "secondhandCNY": { "good": 12500, "fair": 10500 },
-      "lifespanMonths": 54
+      "secondhandCNY": {
+        "good": 12500,
+        "fair": 10500
+      },
+      "lifespanMonths": 84
     },
     {
       "id": "Mac16,5",
@@ -119,8 +143,11 @@
       "chipFamily": "M4 Pro",
       "released": "2024-10",
       "newPriceCNY": 16999,
-      "secondhandCNY": { "good": 14000, "fair": 12000 },
-      "lifespanMonths": 60
+      "secondhandCNY": {
+        "good": 14000,
+        "fair": 12000
+      },
+      "lifespanMonths": 96
     },
     {
       "id": "Mac16,6",
@@ -128,8 +155,11 @@
       "chipFamily": "M4 Max",
       "released": "2024-10",
       "newPriceCNY": 24999,
-      "secondhandCNY": { "good": 21000, "fair": 18000 },
-      "lifespanMonths": 66
+      "secondhandCNY": {
+        "good": 21000,
+        "fair": 18000
+      },
+      "lifespanMonths": 108
     },
     {
       "id": "Mac14,9",
@@ -137,8 +167,11 @@
       "chipFamily": "M2 Pro",
       "released": "2023-01",
       "newPriceCNY": 16999,
-      "secondhandCNY": { "good": 11000, "fair": 9000 },
-      "lifespanMonths": 42
+      "secondhandCNY": {
+        "good": 11000,
+        "fair": 9000
+      },
+      "lifespanMonths": 84
     },
     {
       "id": "Mac14,5",
@@ -146,8 +179,11 @@
       "chipFamily": "M1 Pro",
       "released": "2021-10",
       "newPriceCNY": 14999,
-      "secondhandCNY": { "good": 8500, "fair": 6800 },
-      "lifespanMonths": 36
+      "secondhandCNY": {
+        "good": 8500,
+        "fair": 6800
+      },
+      "lifespanMonths": 72
     },
     {
       "id": "Mac14,7",
@@ -155,8 +191,11 @@
       "chipFamily": "M1 Max",
       "released": "2021-10",
       "newPriceCNY": 19999,
-      "secondhandCNY": { "good": 11500, "fair": 9500 },
-      "lifespanMonths": 42
+      "secondhandCNY": {
+        "good": 11500,
+        "fair": 9500
+      },
+      "lifespanMonths": 84
     },
     {
       "id": "MacBookAir10,1",
@@ -164,8 +203,11 @@
       "chipFamily": "M1",
       "released": "2020-11",
       "newPriceCNY": 7999,
-      "secondhandCNY": { "good": 4500, "fair": 3500 },
-      "lifespanMonths": 30
+      "secondhandCNY": {
+        "good": 4500,
+        "fair": 3500
+      },
+      "lifespanMonths": 60
     },
     {
       "id": "Macmini9,1",
@@ -173,8 +215,11 @@
       "chipFamily": "M1",
       "released": "2020-11",
       "newPriceCNY": 5499,
-      "secondhandCNY": { "good": 3500, "fair": 2700 },
-      "lifespanMonths": 30
+      "secondhandCNY": {
+        "good": 3500,
+        "fair": 2700
+      },
+      "lifespanMonths": 60
     },
     {
       "id": "Macmini14,3",
@@ -182,8 +227,11 @@
       "chipFamily": "M2",
       "released": "2023-01",
       "newPriceCNY": 4499,
-      "secondhandCNY": { "good": 3500, "fair": 2800 },
-      "lifespanMonths": 36
+      "secondhandCNY": {
+        "good": 3500,
+        "fair": 2800
+      },
+      "lifespanMonths": 72
     },
     {
       "id": "Mac15,4",
@@ -191,8 +239,11 @@
       "chipFamily": "M4",
       "released": "2024-11",
       "newPriceCNY": 4499,
-      "secondhandCNY": { "good": 3700, "fair": 3000 },
-      "lifespanMonths": 54
+      "secondhandCNY": {
+        "good": 3700,
+        "fair": 3000
+      },
+      "lifespanMonths": 84
     },
     {
       "id": "Mac15,6",
@@ -200,8 +251,11 @@
       "chipFamily": "M4 Max",
       "released": "2025-03",
       "newPriceCNY": 16499,
-      "secondhandCNY": { "good": 14500, "fair": 12500 },
-      "lifespanMonths": 72
+      "secondhandCNY": {
+        "good": 14500,
+        "fair": 12500
+      },
+      "lifespanMonths": 108
     }
   ]
 }

@@ -78,7 +78,8 @@
       "installMethod": "brewCask",
       "installTarget": "lm-studio",
       "detectCommand": null,
-      "homepage": "https://lmstudio.ai"
+      "homepage": "https://lmstudio.ai",
+      "appName": "LM Studio"
     },
     {
       "slug": "cursor",
@@ -89,7 +90,8 @@
       "installMethod": "brewCask",
       "installTarget": "cursor",
       "detectCommand": null,
-      "homepage": "https://cursor.sh"
+      "homepage": "https://cursor.sh",
+      "appName": "Cursor"
     },
     {
       "slug": "zed",
@@ -100,7 +102,8 @@
       "installMethod": "brewCask",
       "installTarget": "zed",
       "detectCommand": null,
-      "homepage": "https://zed.dev"
+      "homepage": "https://zed.dev",
+      "appName": "Zed"
     },
     {
       "slug": "raycast-ai",
@@ -111,7 +114,8 @@
       "installMethod": "brewCask",
       "installTarget": "raycast",
       "detectCommand": null,
-      "homepage": "https://raycast.com"
+      "homepage": "https://raycast.com",
+      "appName": "Raycast"
     },
     {
       "slug": "llamafile",
