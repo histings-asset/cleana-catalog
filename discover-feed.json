@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "weekOf": "2026-04-21",
+  "updatedAt": "2026-04-27",
+  "note": "Cleana 发现 tab 拉的精选列表。每周人工 + 自动从 awesome-mac / GitHub trending / Anthropic-OpenAI-Cursor changelog 维护。Cleana 不写内容，只整理。每条都尽量带 installHint 让客户端能丢进演练场试装。",
+  "categories": [
+    { "id": "trending", "name": "本周热度上升" },
+    { "id": "new",      "name": "新发布 / 新版本" },
+    { "id": "stack",    "name": "推荐工具栈" },
+    { "id": "niche",    "name": "小众但好用" }
+  ],
+  "entries": [
+    {
+      "id": "opencode-w17",
+      "name": "OpenCode",
+      "blurb": "用 Bun 跑的开源 AI 编程终端，AGENTS.md 兼容；想试 Codex 替代品的可以看看。",
+      "category": "trending",
+      "tagline": "开源 · 终端 · agentic",
+      "installHint": "npm install -g opencode-ai",
+      "homepage": "https://github.com/opencode-ai/opencode",
+      "source": "github-trending",
+      "publishedAt": "2026-04-22"
+    },
+    {
+      "id": "claude-code-2-0",
+      "name": "Claude Code 周更新",
+      "blurb": "Anthropic 周更频繁，最近一波加了 sub-agents 和 MCP server 自定义。CLAUDE.md 跟上 best practice 用 Cleana 配置教练打个分。",
+      "category": "new",
+      "tagline": "weekly · agent · MCP",
+      "installHint": "npm install -g @anthropic-ai/claude-code@latest",
+      "homepage": "https://docs.claude.com/en/docs/claude-code",
+      "source": "anthropic-changelog",
+      "publishedAt": "2026-04-24"
+    },
+    {
+      "id": "aider-w17",
+      "name": "Aider 0.x → 1.0 候选",
+      "blurb": "Git 友好的 AI 结对程序员逼近 1.0，多模型路由 + 插件系统稳定下来。",
+      "category": "new",
+      "tagline": "python · open source · git native",
+      "installHint": "python3 -m pip install --upgrade aider-chat",
+      "homepage": "https://aider.chat",
+      "source": "release-notes",
+      "publishedAt": "2026-04-23"
+    },
+    {
+      "id": "qwen3-coder-32b",
+      "name": "Qwen3 Coder 32B",
+      "blurb": "阿里出的本地 Coder 模型，32B 量化版在 64GB Mac 上能跑。M2 Max 用户值得试一下。",
+      "category": "trending",
+      "tagline": "本地 · 32B · 中文友好",
+      "installHint": "ollama pull qwen3-coder:32b",
+      "homepage": "https://ollama.com/library/qwen3-coder",
+      "source": "ollama-trending",
+      "publishedAt": "2026-04-22"
+    },
+    {
+      "id": "cursor-2-x",
+      "name": "Cursor 2.x agent mode",
+      "blurb": "Cursor 的 agent mode 越来越成熟，可以试着把 .cursorrules 升级到 .cursor/rules/*.mdc 的新格式。",
+      "category": "new",
+      "tagline": "agent · rules · cursor",
+      "installHint": "brew install --cask cursor",
+      "homepage": "https://cursor.sh",
+      "source": "cursor-changelog",
+      "publishedAt": "2026-04-25"
+    },
+    {
+      "id": "stack-cleana",
+      "name": "Cleana 推荐栈：Cursor + Claude Code + Ollama",
+      "blurb": "AI 编程主流三件套。Cursor 写代码、Claude Code 跑 agent、Ollama 本地兜底。一键试装在演练场看看适不适合。",
+      "category": "stack",
+      "tagline": "stack · 编程主力",
+      "installHint": null,
+      "homepage": null,
+      "source": "cleana-curated",
+      "publishedAt": "2026-04-27"
+    },
+    {
+      "id": "stack-local",
+      "name": "本地推理发烧友栈：Ollama + LM Studio + llamafile",
+      "blurb": "三个本地推理工具配合：Ollama 命令行 / LM Studio GUI / llamafile 单文件。模型柜会自动识别它们。",
+      "category": "stack",
+      "tagline": "stack · 本地 LLM",
+      "installHint": null,
+      "homepage": null,
+      "source": "cleana-curated",
+      "publishedAt": "2026-04-27"
+    },
+    {
+      "id": "vllm-mac",
+      "name": "vLLM macOS 实验性支持",
+      "blurb": "原本是 Linux GPU 推理引擎，现在 Apple Silicon 上有实验分支。用 64GB+ Mac Studio 跑生产负载值得关注。",
+      "category": "niche",
+      "tagline": "推理引擎 · 实验性",
+      "installHint": "python3 -m pip install vllm",
+      "homepage": "https://github.com/vllm-project/vllm",
+      "source": "github-trending",
+      "publishedAt": "2026-04-21"
+    },
+    {
+      "id": "mlx-llm",
+      "name": "mlx-lm",
+      "blurb": "Simon Willison 推荐过的 Apple 自家 MLX 推理路径，比 Ollama 更靠近 metal。",
+      "category": "niche",
+      "tagline": "Apple · MLX · 高性能",
+      "installHint": "python3 -m pip install mlx-lm",
+      "homepage": "https://github.com/ml-explore/mlx-lm",
+      "source": "awesome-ai-mac",
+      "publishedAt": "2026-04-20"
+    }
+  ]
+}
